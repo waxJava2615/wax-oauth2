@@ -1,0 +1,42 @@
+server:
+  port: 8000
+spring:
+  redis:
+    host: localhost # Redis服务器地址
+    database: 0 # Redis数据库索引（默认为0）
+    port: 6379 # Redis服务器连接端口
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true #使用小写service-id
+      routes:
+        - id: wax-server
+          uri: lb://wax-server
+          predicates:
+            - Path=/wax-server/**
+          filters:
+            - StripPrefix=1
+        - id: wax-admin
+          uri: lb://wax-admin
+          predicates:
+            - Path=/wax-admin/**
+          filters:
+            - StripPrefix=1
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:8000/wax-server/rsa/publicKey"
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  application:
+    name: wax-gateway
+secure:
+  ignore:
+    urls:
+      - "/wax-server/oauth/token"
+      - "/wax-server/rsa/publicKey"
+debug: true

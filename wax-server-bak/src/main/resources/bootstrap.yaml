@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: wax-server
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.0.10:8848
+        namespace: 5e3ec93d-7036-4301-a8ee-c77cb78c5853
+      config:
+        file-extension: yaml
+        server-addr: 192.168.0.10:8848
+        #extension-configs:
+      username: nacos
+      password: nacos
